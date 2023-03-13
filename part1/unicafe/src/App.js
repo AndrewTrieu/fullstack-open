@@ -2,7 +2,6 @@ import { useState } from "react";
 const Button = ({ handleClick, text }) => {
   return <button onClick={handleClick}>{text}</button>;
 };
-// StatistticsLine should display as a HTML table
 const StatisticsLine = ({ text, value }) => {
   return (
     <tr>
