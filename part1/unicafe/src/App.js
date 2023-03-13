@@ -2,12 +2,13 @@ import { useState } from "react";
 const Button = (props) => {
   return <button onClick={props.handleClick}>{props.text}</button>;
 };
+// StatistticsLine should display as a HTML table
 const StatisticsLine = ({ text, value }) => {
   return (
-    <p>
-      {" "}
-      {text} {value}{" "}
-    </p>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   );
 };
 const Statistics = (props) => {
