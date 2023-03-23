@@ -30,6 +30,16 @@ const App = () => {
     });
   };
 
+  const deletePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      personService.deletePerson(id).then((response) => {
+        const newPersons = persons.filter((person) => person.id !== id);
+        setPersons(newPersons);
+        setShowedPersons(newPersons);
+      });
+    }
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setNewPerson({ ...newPerson, [name]: value });
@@ -47,13 +57,14 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Filter filter={filter} filterByName={filterByName} />
+      <h2>Add a new number</h2>
       <PersonForm
         addPerson={addPerson}
         newPerson={newPerson}
         handleChange={handleChange}
       />
       <h2>Numbers</h2>
-      <ShowPersons showedPersons={showedPersons} />
+      <ShowPersons showedPersons={showedPersons} deletePerson={deletePerson} />
     </div>
   );
 };
