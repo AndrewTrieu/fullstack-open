@@ -10,7 +10,7 @@ const PersonForm = ({ addPerson, newPerson, handleChange }) => {
         <input name="number" value={newPerson.number} onChange={handleChange} />
       </div>
       <div>
-        <button type="submit">add</button>
+        <button type="submit">Add</button>
       </div>
     </form>
   );

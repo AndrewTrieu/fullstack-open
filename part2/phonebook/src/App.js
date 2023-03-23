@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
-import personService from "./services/personService.js";
+import personService from "./services/personService";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import ShowPersons from "./components/ShowPersons";
+import Message from "./components/Message";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newPerson, setNewPerson] = useState({ name: "", number: "" });
   const [filter, setFilter] = useState("");
   const [showedPersons, setShowedPersons] = useState([]);
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -17,39 +19,64 @@ const App = () => {
     });
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setMessage(null);
+    }, 5000);
+  }, [message]);
+
   const addPerson = (event) => {
     event.preventDefault();
-    if (persons.find((person) => person.name === newPerson.name)) {
+    const personExists = persons.find(
+      (person) => person.name === newPerson.name
+    );
+    if (personExists) {
       if (
         window.confirm(
           `${newPerson.name} is already added to phonebook, replace the old number with a new one?`
         )
       ) {
-        const person = persons.find((person) => person.name === newPerson.name);
-        const changedPerson = { ...person, number: newPerson.number };
+        const updatedPerson = { ...personExists, number: newPerson.number };
         personService
-          .update(person.id, changedPerson)
+          .update(updatedPerson.id, updatedPerson)
           .then((returnedPerson) => {
             setPersons(
               persons.map((person) =>
-                person.id !== returnedPerson.id ? person : returnedPerson
+                person.id !== updatedPerson.id ? person : returnedPerson
               )
             );
             setShowedPersons(
-              persons.map((person) =>
-                person.id !== returnedPerson.id ? person : returnedPerson
+              showedPersons.map((person) =>
+                person.id !== updatedPerson.id ? person : returnedPerson
               )
             );
-            setNewPerson({ name: "", number: "" });
+            setMessage(`Updated ${returnedPerson.name}`);
+          })
+          .catch((error) => {
+            setMessage(
+              `Information of ${updatedPerson.name} has already been removed from server`
+            );
+            setPersons(
+              persons.filter((person) => person.id !== updatedPerson.id)
+            );
+            setShowedPersons(
+              showedPersons.filter((person) => person.id !== updatedPerson.id)
+            );
           });
       }
     } else {
-      personService.create(newPerson).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setShowedPersons(persons.concat(returnedPerson));
-        setNewPerson({ name: "", number: "" });
-      });
+      personService
+        .create(newPerson)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setShowedPersons(showedPersons.concat(returnedPerson));
+          setMessage(`Added ${returnedPerson.name}`);
+        })
+        .catch((error) => {
+          setMessage(error.response.data.error);
+        });
     }
+    setNewPerson({ name: "", number: "" });
   };
 
   const deletePerson = (id, name) => {
@@ -78,6 +105,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Message message={message} />
       <Filter filter={filter} filterByName={filterByName} />
       <h2>Add a new number</h2>
       <PersonForm
