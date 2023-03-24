@@ -9,7 +9,7 @@ const App = () => {
   const CountryData = ({ country }) => {
     return (
       <div>
-        <h1>{country.name.common}</h1>
+        <h1>{country.name.official}</h1>
         <div>Capital: {country.capital}</div>
         <div>Area: {country.area} km²</div>
         <h3>Languages:</h3>
@@ -24,14 +24,19 @@ const App = () => {
   };
 
   const Countries = ({ showedCountries }) => {
+    const [country, setCountry] = useState("");
     if (showedCountries.length === 1) {
       return <CountryData country={showedCountries[0]} />;
     } else if (showedCountries.length <= 10) {
       return (
         <div>
           {showedCountries.map((country) => (
-            <div key={country.name.official}>{country.name.common}</div>
+            <div key={country.cca3}>
+              {country.name.common}{" "}
+              <button onClick={() => setCountry(country)}>show</button>
+            </div>
           ))}
+          {country && <CountryData country={country} />}
         </div>
       );
     } else if (showedCountries.length > 10) {
