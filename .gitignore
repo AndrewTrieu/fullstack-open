@@ -1,3 +1,4 @@
 .vscode/settings.json
-part2/countries/.env
+part3/phonebook/.env
+part3/phonebook/node_modules
 test
