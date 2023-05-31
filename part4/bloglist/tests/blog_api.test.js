@@ -84,6 +84,40 @@ describe('adding blog', () => {
   })
 })
 
+describe('deleting blog', () => {
+  test('a blog can be deleted', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+    const contents = blogsAtEnd.map((r) => r.title)
+    expect(contents).not.toContain(blogToDelete.title)
+  })
+})
+
+describe('updating blog', () => {
+  test('a blog can be updated', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const newBlog = {
+      title: 'Updated blog',
+      author: blogToUpdate.author,
+      url: blogToUpdate.url,
+      likes: blogToUpdate.likes
+    }
+
+    await api.put(`/api/blogs/${blogToUpdate.id}`).send(newBlog).expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    const contents = blogsAtEnd.map((r) => r.title)
+    expect(contents).toContain('Updated blog')
+  })
+})
 
 describe('blog id check', () => {
   test('blog id is defined', async () => {
