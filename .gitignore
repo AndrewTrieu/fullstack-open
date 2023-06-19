@@ -1,6 +1,4 @@
 .vscode/settings.json
-part3/phonebook/.env
-part3/phonebook/node_modules
+**/**/node_modules
+**/**/.env
 test
-part4/bloglist/.env
-part4/bloglist/node_modules
