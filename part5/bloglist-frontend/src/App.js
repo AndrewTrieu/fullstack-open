@@ -72,7 +72,7 @@ const App = () => {
     }
   };
   const newBlogRef = useRef();
-  const handleNewBlog = async (newBlog) => {
+  const handleNewBlog = (newBlog) => {
     newBlogRef.current.toggleVisibility();
     blogService
       .create(newBlog)
@@ -87,6 +87,23 @@ const App = () => {
       .catch((error) => {
         setNotification("Failed to add new blog: " + error, "error");
       });
+  };
+
+  const handleRemoveBlog = (blog) => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      blogService
+        .remove(blog.id)
+        .then(() => {
+          setBlogs(blogs.filter((b) => b.id !== blog.id));
+          setNotification(
+            `Blog ${blog.title} by ${blog.author} removed`,
+            "success"
+          );
+        })
+        .catch((error) => {
+          setNotification("Failed to remove blog: " + error, "error");
+        });
+    }
   };
 
   const loginForm = () => (
@@ -123,7 +140,12 @@ const App = () => {
         </Togglable>
         <h2> All blogs</h2>
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            setNotification={setNotification}
+            removeBlog={handleRemoveBlog}
+          />
         ))}
       </div>
     );

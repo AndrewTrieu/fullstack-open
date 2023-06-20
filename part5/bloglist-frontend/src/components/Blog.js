@@ -1,6 +1,8 @@
+import { useState } from "react";
+import blogService from "../services/blogs";
 import Togglable from "./Togglable";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, setNotification, removeBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -8,15 +10,36 @@ const Blog = ({ blog }) => {
     borderWidth: 1,
     marginBottom: 5,
   };
+
+  const [likes, setLikes] = useState(blog.likes);
+
+  const handleLike = (blog) => {
+    blog.likes = blog.likes + 1;
+    blogService
+      .update(blog.id, blog)
+      .then((returnedBlog) => {
+        setLikes(returnedBlog.likes);
+        setNotification(`You liked ${blog.title}`, "success");
+      })
+      .catch((error) => {
+        setNotification(`Like failed. Error: ${error}`, "error");
+      });
+  };
+
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title}
-        <Togglable buttonLabel="view">
+        <em>{blog.title}</em>
+        <Togglable buttonLabel="View">
           <ul>
-            <li> {blog.author}</li>
-            <li> {blog.url}</li>
+            <li> Author: {blog.author}</li>
+            <li> URL: {blog.url}</li>
+            <li>
+              {likes} likes&nbsp;
+              <button onClick={() => handleLike(blog)}>+</button>
+            </li>
           </ul>
+          <button onClick={() => removeBlog(blog)}>Remove</button>
         </Togglable>
       </div>
     </div>
