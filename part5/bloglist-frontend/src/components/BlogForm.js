@@ -1,25 +1,25 @@
-import { useState } from "react";
+import { useState } from 'react'
 
 export const BlogForm = ({ createBlog }) => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [urlAddress, setUrlAddress] = useState("");
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [urlAddress, setUrlAddress] = useState('')
 
   const resetInputFields = () => {
-    setTitle("");
-    setAuthor("");
-    setUrlAddress("");
-  };
+    setTitle('')
+    setAuthor('')
+    setUrlAddress('')
+  }
 
   const addBlog = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     createBlog({
       title: title,
       author: author,
       url: urlAddress,
-    });
-    resetInputFields();
-  };
+    })
+    resetInputFields()
+  }
 
   return (
     <div>
@@ -55,5 +55,5 @@ export const BlogForm = ({ createBlog }) => {
         <button type="submit">Create</button>
       </form>
     </div>
-  );
-};
+  )
+}

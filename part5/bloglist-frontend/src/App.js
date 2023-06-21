@@ -1,110 +1,110 @@
-import { useState, useEffect, useRef } from "react";
-import Blog from "./components/Blog";
-import { BlogForm } from "./components/BlogForm";
-import Notification from "./components/Notification";
-import blogService from "./services/blogs";
-import loginService from "./services/login";
-import Togglable from "./components/Togglable";
+import { useState, useEffect, useRef } from 'react'
+import Blog from './components/Blog'
+import { BlogForm } from './components/BlogForm'
+import Notification from './components/Notification'
+import blogService from './services/blogs'
+import loginService from './services/login'
+import Togglable from './components/Togglable'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
+  const [blogs, setBlogs] = useState([])
+  const [user, setUser] = useState(null)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
 
   const resetInputFields = () => {
-    setUsername("");
-    setPassword("");
-  };
+    setUsername('')
+    setPassword('')
+  }
 
   const setNotification = (message, type) => {
-    if (type === "success") {
-      setSuccessMessage(message);
+    if (type === 'success') {
+      setSuccessMessage(message)
       setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
-    } else if (type === "error") {
-      setErrorMessage(message);
+        setSuccessMessage(null)
+      }, 5000)
+    } else if (type === 'error') {
+      setErrorMessage(message)
       setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
+        setErrorMessage(null)
+      }, 5000)
     }
-  };
+  }
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-    const loggedInUserLocal = window.localStorage.getItem("loggedInUser");
+    blogService.getAll().then((blogs) => setBlogs(blogs))
+    const loggedInUserLocal = window.localStorage.getItem('loggedInUser')
 
     if (loggedInUserLocal) {
-      const user = JSON.parse(loggedInUserLocal);
-      setUser(user);
-      blogService.setToken(user.token);
+      const user = JSON.parse(loggedInUserLocal)
+      setUser(user)
+      blogService.setToken(user.token)
     }
-  }, []);
+  }, [])
 
   const handleLogin = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
-      const user = await loginService.login({ username, password });
-      blogService.setToken(user.token);
-      window.localStorage.setItem("loggedInUser", JSON.stringify(user));
-      setUser(user);
-      resetInputFields();
-      setNotification("Login successful", "success");
+      const user = await loginService.login({ username, password })
+      blogService.setToken(user.token)
+      window.localStorage.setItem('loggedInUser', JSON.stringify(user))
+      setUser(user)
+      resetInputFields()
+      setNotification('Login successful', 'success')
     } catch (exception) {
-      setNotification("Wrong credentials", "error");
+      setNotification('Wrong credentials', 'error')
     }
-  };
+  }
 
   const handleLogout = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     try {
-      setNotification("Logout successful", "success");
-      window.localStorage.clear();
-      blogService.setToken(null);
-      setUser(null);
-      resetInputFields();
+      setNotification('Logout successful', 'success')
+      window.localStorage.clear()
+      blogService.setToken(null)
+      setUser(null)
+      resetInputFields()
     } catch (exception) {
-      setNotification("Logout failed", "error");
+      setNotification('Logout failed', 'error')
     }
-  };
-  const newBlogRef = useRef();
+  }
+  const newBlogRef = useRef()
   const handleNewBlog = (newBlog) => {
-    newBlogRef.current.toggleVisibility();
+    newBlogRef.current.toggleVisibility()
     blogService
       .create(newBlog)
       .then((returnedBlog) => {
-        setBlogs(blogs.concat(returnedBlog));
-        resetInputFields();
+        setBlogs(blogs.concat(returnedBlog))
+        resetInputFields()
         setNotification(
           `A new blog ${returnedBlog.title} by ${returnedBlog.author} at ${returnedBlog.url} added`,
-          "success"
-        );
+          'success'
+        )
       })
       .catch((error) => {
-        setNotification("Failed to add new blog: " + error, "error");
-      });
-  };
+        setNotification('Failed to add new blog: ' + error, 'error')
+      })
+  }
 
   const handleRemoveBlog = (blog) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
       blogService
         .remove(blog.id)
         .then(() => {
-          setBlogs(blogs.filter((b) => b.id !== blog.id));
+          setBlogs(blogs.filter((b) => b.id !== blog.id))
           setNotification(
             `Blog ${blog.title} by ${blog.author} removed`,
-            "success"
-          );
+            'success'
+          )
         })
         .catch((error) => {
-          setNotification("Failed to remove blog: " + error, "error");
-        });
+          setNotification('Failed to remove blog: ' + error, 'error')
+        })
     }
-  };
+  }
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -128,7 +128,7 @@ const App = () => {
       </div>
       <button type="submit">Login</button>
     </form>
-  );
+  )
 
   const blogForm = () => {
     return (
@@ -148,8 +148,8 @@ const App = () => {
           />
         ))}
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div>
@@ -167,7 +167,7 @@ const App = () => {
         <div>{blogForm()}</div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

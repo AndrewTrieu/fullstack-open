@@ -1,18 +1,18 @@
 const errorNotification = ({ message }) => {
   if (message === null) {
-    return null;
+    return null
   } else {
-    return <div style={{ color: "red" }}>{message}</div>;
+    return <div style={{ color: 'red' }}>{message}</div>
   }
-};
+}
 
 const successNotification = ({ message }) => {
   if (message === null) {
-    return null;
+    return null
   } else {
-    return <div style={{ color: "green" }}>{message}</div>;
+    return <div style={{ color: 'green' }}>{message}</div>
   }
-};
+}
 
 const Notification = ({ errorMessage, successMessage }) => {
   return (
@@ -20,7 +20,7 @@ const Notification = ({ errorMessage, successMessage }) => {
       {errorNotification({ message: errorMessage })}
       {successNotification({ message: successMessage })}
     </div>
-  );
-};
+  )
+}
 
-export default Notification;
+export default Notification
