@@ -107,13 +107,13 @@ const App = () => {
   }
 
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleLogin} className="loginForm">
       <div>
         Username
         <input
           type="text"
           value={username}
-          name="username"
+          className="username"
           onChange={({ target }) => setUsername(target.value)}
         />
       </div>
@@ -122,11 +122,11 @@ const App = () => {
         <input
           type="password"
           value={password}
-          name="password"
+          className="password"
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" className='loginButton'>Login</button>
     </form>
   )
 
@@ -134,19 +134,21 @@ const App = () => {
     return (
       <div>
         <p> {user.name} logged in </p>
-        <button onClick={handleLogout}>Logout</button>
+        <button onClick={handleLogout} className='logoutButton'>Logout</button>
         <Togglable buttonLabel="New blog" ref={newBlogRef}>
           <BlogForm createBlog={handleNewBlog} />
         </Togglable>
         <h2> All blogs</h2>
-        {blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            setNotification={setNotification}
-            removeBlog={handleRemoveBlog}
-          />
-        ))}
+        {blogs
+          .sort((a, b) => b.likes - a.likes)
+          .map((blog) => (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              setNotification={setNotification}
+              removeBlog={handleRemoveBlog}
+            />
+          ))}
       </div>
     )
   }

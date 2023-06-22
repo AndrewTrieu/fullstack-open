@@ -24,13 +24,13 @@ export const BlogForm = ({ createBlog }) => {
   return (
     <div>
       <h2> Create new blog</h2>
-      <form onSubmit={addBlog} name='form'>
+      <form onSubmit={addBlog} className='form'>
         <div>
           Title:
           <input
             type="text"
             value={title}
-            name="title"
+            className="title"
             onChange={(event) => setTitle(event.target.value)}
           />
         </div>
@@ -39,7 +39,7 @@ export const BlogForm = ({ createBlog }) => {
           <input
             type="text"
             value={author}
-            name="author"
+            className="author"
             onChange={(event) => setAuthor(event.target.value)}
           />
         </div>
@@ -48,11 +48,11 @@ export const BlogForm = ({ createBlog }) => {
           <input
             type="text"
             value={urlAddress}
-            name="urlAddress"
+            className="urlAddress"
             onChange={(event) => setUrlAddress(event.target.value)}
           />
         </div>
-        <button type="submit">Create</button>
+        <button type="submit" className='createButton'>Create</button>
       </form>
     </div>
   )

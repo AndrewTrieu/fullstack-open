@@ -70,10 +70,10 @@ describe('test for blogs', () => {
 
     const user = userEvent.setup()
 
-    const title = component.container.getElementsByName('title')
-    const author = component.container.getElementsByName('author')
-    const url = component.container.getElementsByName('urlAddress')
-    const form = component.container.getElementsByName('form')
+    const title = component.container.querySelector('.title')
+    const author = component.container.querySelector('.author')
+    const url = component.container.querySelector('.urlAddress')
+    const form = component.container.querySelector('.form')
 
     await user.type(title, 'How to be a good programmer')
     await user.type(author, 'Andrew Trieu')
