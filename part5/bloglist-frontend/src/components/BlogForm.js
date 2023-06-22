@@ -24,7 +24,7 @@ export const BlogForm = ({ createBlog }) => {
   return (
     <div>
       <h2> Create new blog</h2>
-      <form onSubmit={addBlog}>
+      <form onSubmit={addBlog} name='form'>
         <div>
           Title:
           <input

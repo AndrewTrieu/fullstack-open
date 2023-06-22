@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
-import { BlogForm } from './components/BlogForm'
-import Notification from './components/Notification'
-import blogService from './services/blogs'
-import loginService from './services/login'
-import Togglable from './components/Togglable'
+import Blog from './components/Blog.js'
+import { BlogForm } from './components/BlogForm.js'
+import Notification from './components/Notification.js'
+import blogService from './services/blogs.js'
+import loginService from './services/login.js'
+import Togglable from './components/Togglable.js'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -24,12 +24,12 @@ const App = () => {
       setSuccessMessage(message)
       setTimeout(() => {
         setSuccessMessage(null)
-      }, 5000)
+      }, 3000)
     } else if (type === 'error') {
       setErrorMessage(message)
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000)
+      }, 3000)
     }
   }
 
@@ -113,7 +113,7 @@ const App = () => {
         <input
           type="text"
           value={username}
-          name="Username"
+          name="username"
           onChange={({ target }) => setUsername(target.value)}
         />
       </div>
@@ -122,7 +122,7 @@ const App = () => {
         <input
           type="password"
           value={password}
-          name="Password"
+          name="password"
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
