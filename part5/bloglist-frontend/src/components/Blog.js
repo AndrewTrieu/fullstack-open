@@ -33,9 +33,7 @@ const Blog = ({ blog, setNotification, removeBlog }) => {
     blog.user = blogToFind?.user
   }
 
-  if (!blog.user) {
-    findUser(blog.id)
-  }
+  findUser(blog.id)
 
   return (
     <div style={blogStyle} className="blog">
