@@ -43,11 +43,6 @@ describe('blog app', function () {
     })
 
     it('a blog can be liked', function () {
-      cy.contains('New blog').click()
-      cy.get('.title').type('a blog created')
-      cy.get('.author').type('cypress')
-      cy.get('.urlAddress').type('cypress.com')
-      cy.get('.createButton').click()
       cy.contains('a blog created by cypress')
       cy.contains('View').click()
       cy.contains('+').click()
@@ -55,11 +50,6 @@ describe('blog app', function () {
     })
 
     it('a blog can be deleted', function () {
-      cy.contains('New blog').click()
-      cy.get('.title').type('a blog created')
-      cy.get('.author').type('cypress')
-      cy.get('.urlAddress').type('cypress.com')
-      cy.get('.createButton').click()
       cy.contains('a blog created by cypress')
       cy.contains('View').click()
       cy.contains('Remove').click()
@@ -67,13 +57,6 @@ describe('blog app', function () {
     })
 
     it('only the creator can delete a blog', function () {
-      cy.contains('New blog').click()
-      cy.get('.title').type('a blog created')
-      cy.get('.author').type('cypress')
-      cy.get('.urlAddress').type('cypress.com')
-      cy.get('.createButton').click()
-      cy.contains('a blog created by cypress')
-      cy.get('.logoutButton').click()
       cy.get('.username').type('mluukkai')
       cy.get('.password').type('salainen')
       cy.get('.loginButton').click()
