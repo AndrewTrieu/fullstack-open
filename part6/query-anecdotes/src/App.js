@@ -1,14 +1,34 @@
 import AnecdoteForm from "./components/AnecdoteForm";
 import Notification from "./components/Notification";
-import { useQuery } from "react-query";
-import { getAnecdotes } from "./components/requests";
+import { useQuery, useQueryClient, useMutation } from "react-query";
+import { getAnecdotes, updateAnecdote } from "./components/requests";
 
 const App = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(updateAnecdote, {
+    onSuccess: (newAnecdote) => {
+      const anecdotes = queryClient.getQueryData("anecdotes");
+      queryClient.setQueryData(
+        "anecdotes",
+        anecdotes.map((oldAnecdote) =>
+          oldAnecdote.id === newAnecdote.id ? newAnecdote : oldAnecdote
+        )
+      );
+    },
+  });
+
   const handleVote = (anecdote) => {
-    console.log("vote");
+    mutation.mutate({
+      ...anecdote,
+      votes: anecdote.votes + 1,
+    });
   };
 
-  const { data: anecdotes, status } = useQuery("anecdotes", getAnecdotes);
+  const { data: anecdotes, status } = useQuery("anecdotes", getAnecdotes, {
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
 
   if (status === "loading") {
     return <div>loading...</div>;
