@@ -18,7 +18,6 @@ const createNew = async (content) => {
 const addVote = async (id) => {
   const anecdotes = await getAll();
   const anecdote = anecdotes.find((a) => a.id === id);
-  console.log(anecdote);
   const voted = { ...anecdote, votes: anecdote.votes + 1 };
   const response = await axios.put(`${baseUrl}/${id}`, voted);
   return response.data;
