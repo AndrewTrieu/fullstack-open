@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { vote } from "../reducers/anecdoteReducer";
+import { voteAnecdote } from "../reducers/anecdoteReducer";
 import { setNotification } from "../reducers/notificationReducer";
 
 const List = () => {
@@ -12,12 +12,13 @@ const List = () => {
   });
 
   const handleVote = (id) => {
-    dispatch(vote(id));
+    dispatch(voteAnecdote(id));
     dispatch(
       setNotification(
         `You voted for "${
           anecdotes.find((anecdote) => anecdote.id === id).content
-        }"`
+        }"`,
+        5
       )
     );
   };
